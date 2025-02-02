@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        {% if session.username %}
+            <a href="/logout">Kirjaudu ulos</a>
+            <form action="/createlist" method="POST">
+                <label for="listname">Uuden listan nimi:</label>
+                <input type="text" name="listname">
+                <input type="submit" name="submit">
+            </form>
+        {% else %}
+            <p>Sinun pitää <a href="/">kirjautua sisään</a></p>
+        {% endif %}
+    </body>
+</html>

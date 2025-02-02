@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        {% if session.username %}
+            <a href="/logout">Kirjaudu ulos</a>
+            {% if items %}
+                {% for item in items %}
+                <ul>
+                    <li>{{ item.content }} <button>poista</button></li>
+                </ul>
+                {% endfor %}
+            {% else %}
+            <p>Tämä lista on tyhjä!</p>
+            {% endif %}
+            <p>
+            <form action="/list/{{list_id}}" method="POST">
+                <label for="new_item">Lisää tuote listalle:</label>
+                <input type="text" name="new_item">
+                <input type="submit">
+            </form>
+            </p>
+            <a href="/main">Palaa pääsivulle</a>
+        {% else %}
+            <p>Sinun pitää <a href="/">kirjautua sisään</a></p>
+        {% endif %}
+    </body>
+</html>

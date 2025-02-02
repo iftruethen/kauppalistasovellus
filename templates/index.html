@@ -11,6 +11,9 @@
     Olet kirjautunut nimellä {{ session.username }}
   </p>
   <p>
+    <a href="/main">Siirry sovellukseen</a>
+  </p>
+  <p>
     <a href="/logout">Kirjaudu ulos</a>
   </p>
   {% else %}
@@ -25,6 +28,7 @@
     </p>
     <input type="submit" value="Kirjaudu" />
   </form>
+  <a href="/register"><input type="button" value="Luo uusi käyttäjä"></a>
   {% endif %}
 </body>
 

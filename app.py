@@ -3,7 +3,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
-import db
+import db, lists
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -56,3 +56,32 @@ def create():
         return "VIRHE: tunnus on jo varattu"
 
     return ("Tunnus luotu " + returnbutton)
+
+@app.route("/main")
+def main():
+    users_lists = lists.get_users_lists(session["username"])
+    print("from app.py", users_lists)
+    return render_template("main.html", users_lists=users_lists)
+
+@app.route("/newlist")
+def newlist():
+    return render_template("newlist.html")
+
+@app.route("/createlist", methods=["POST"])
+def createlist():
+    new_list_name = request.form["listname"]
+    lists.create_new_list(new_list_name,session["username"])
+    #print("News list's name: ", new_list_name)
+    return redirect("/main")
+
+@app.route("/list/<int:list_id>", methods=["GET"])
+def show_list(list_id):
+    list = lists.get_list(list_id)
+    items = lists.get_items(list_id)
+    return render_template("list.html", list=list, items=items, list_id=list_id)
+
+@app.route("/list/<int:list_id>", methods=["POST"])
+def add_item_to_list(list_id):
+    new_item = request.form["new_item"]
+    lists.add_item_to_list(new_item, list_id, session["username"])
+    return redirect("/list/"+str(list_id))
