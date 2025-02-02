@@ -76,7 +76,7 @@ Sovellus tulee toteuttamaan vaaditut toiminnallisuudet:
     <li>
         Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan tietokohteita.
         <ul><li>
-            Lisäys toteutettu, muokkaus ja poistaminen vielä vaiheessa.
+            Lisääminen toteutettu. Muokkaus ja poistaminen vielä vaiheessa.
         </ul></li>
     </li>
     <li>
