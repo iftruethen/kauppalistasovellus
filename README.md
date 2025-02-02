@@ -62,9 +62,11 @@ Sovellus tulee toteuttamaan vaaditut toiminnallisuudet:
     </li>
 </ul>
 
-<b>Sovelluksen vaihe:</b>
+<h2>Sovelluksen vaihe:</h2>
+<br>
 2.2.2025
-Tavoitteet ja tila
+<br>
+<h3>Tavoitteet ja tila</h3>
 <ul>
     <li>
         Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
