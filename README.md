@@ -75,7 +75,7 @@ Tavoitteet ja tila
     <li>
         Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan tietokohteita.
         <ul><li>
-            Toteutettu
+            Lisäys toteutettu, muokkaus ja poistaminen vielä vaiheessa.
         </ul></li>
     </li>
     <li>
@@ -87,7 +87,15 @@ Tavoitteet ja tila
     <li>
         Käyttäjä pystyy etsimään tietokohteita hakusanalla tai muulla perusteella.
         <ul><li>
-            Toteutettu
+            Tämä ominaisuus vielä vaiheessa.
         </ul></li>
     </li>
+</ul>
+
+Sovelluksen puutteet ja tarvittavat korjaukset:
+<ul>
+    <li>tietokohteiden muokkauksen ja poistamisen viimeistely</li>
+    <li>hakutoiminnon toteuttaminen</li>
+    <li>sovelluksen tietoturvan parantaminen (erityisesti pitää estää luvaton listojen katselu ja muokkaus)</li>
+    <li>yleinen bugien etsintä ja reunatapaustilanteiden varmistaminen</li>
 </ul>
