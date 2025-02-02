@@ -61,3 +61,33 @@ Sovellus toteuttaa vaaditut toiminnallisuudet:
         </ul>
     </li>
 </ul>
+
+<b>Sovelluksen vaihe:</b>
+2.2.2025
+Tavoitteet ja tila
+<ul>
+    <li>
+        Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
+        <ul><li>
+            Toteutettu
+        </ul></li>
+    </li>
+    <li>
+        Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan tietokohteita.
+        <ul><li>
+            Toteutettu
+        </ul></li>
+    </li>
+    <li>
+        Käyttäjä näkee sovellukseen lisätyt tietokohteet.
+        <ul><li>
+            Toteutettu
+        </ul></li>
+    </li>
+    <li>
+        Käyttäjä pystyy etsimään tietokohteita hakusanalla tai muulla perusteella.
+        <ul><li>
+            Toteutettu
+        </ul></li>
+    </li>
+</ul>
