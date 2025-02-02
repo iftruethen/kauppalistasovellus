@@ -1,7 +1,7 @@
 # kauppalistasovellus
 Projektin aihe: <b>kauppalistasovellus</b>
 
-Sovellus toteuttaa vaaditut toiminnallisuudet:
+Sovellus tulee toteuttamaan vaaditut toiminnallisuudet:
 
 <ul>
     <li>
