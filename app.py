@@ -7,6 +7,7 @@ import db
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+returnbutton = "<a href='/'><input type='button' value='Palaa'/></a>"
 
 @app.route("/")
 def index():
@@ -14,17 +15,21 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
+    error_message = ("VIRHE: väärä tunnus tai salasana " + returnbutton)
     username = request.form["username"]
     password = request.form["password"]
     
     sql = "SELECT password_hash FROM users WHERE name = ?"
-    password_hash = db.query(sql, [username])[0][0]
+    try:
+        password_hash = db.query(sql, [username])[0][0]
+    except:
+        return error_message
 
     if check_password_hash(password_hash, password):
         session["username"] = username
         return redirect("/")
     else:
-        return "VIRHE: väärä tunnus tai salasana"
+        return error_message
 
 @app.route("/logout")
 def logout():
@@ -50,4 +55,4 @@ def create():
     except sqlite3.IntegrityError:
         return "VIRHE: tunnus on jo varattu"
 
-    return "Tunnus luotu <a href='/register'>palaa</a>"
+    return ("Tunnus luotu " + returnbutton)
