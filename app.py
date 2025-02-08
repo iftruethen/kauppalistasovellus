@@ -7,7 +7,6 @@ import db, lists
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
-returnbutton = "<a href='/'><input type='button' value='Palaa'/></a>"
 
 @app.route("/")
 def index():
@@ -15,21 +14,19 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-    error_message = ("VIRHE: väärä tunnus tai salasana " + returnbutton)
     username = request.form["username"]
     password = request.form["password"]
     
     sql = "SELECT password_hash FROM users WHERE name = ?"
-    try:
-        password_hash = db.query(sql, [username])[0][0]
-    except:
-        return error_message
-
-    if check_password_hash(password_hash, password):
+    password_element = db.query(sql, [username])
+    
+    if len(password_element) == 0:
+        return render_template("message.html", message = "VIRHE: virheellinen tunnus")
+    elif check_password_hash(password_element[0][0], password):
         session["username"] = username
         return redirect("/")
     else:
-        return error_message
+        return render_template("message.html", message="VIRHE: väärä salasana")
 
 @app.route("/logout")
 def logout():
@@ -46,7 +43,7 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
+        return render_template("message.html", message="VIRHE: salasanat eivät ole samat")
     password_hash = generate_password_hash(password1)
 
     try:
@@ -55,7 +52,7 @@ def create():
     except sqlite3.IntegrityError:
         return "VIRHE: tunnus on jo varattu"
 
-    return ("Tunnus luotu " + returnbutton)
+    return render_template("message.html", message="Tunnus luotu")
 
 @app.route("/main")
 def main():
