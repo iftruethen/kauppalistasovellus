@@ -6,6 +6,7 @@
     <body>
         {% if session.username %}
             <a href="/logout">Kirjaudu ulos</a>
+            <a href="/haku">Hae listoja</a>
             {% if users_lists %}
                 <p>Sinulla on listoja:</p>
                 {% for list in users_lists %}

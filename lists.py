@@ -28,3 +28,12 @@ def remove_item(item_id):
 
 def remove_list(list_id):
     db.execute("DELETE FROM users_lists WHERE list_id = ?",[list_id])
+
+def search_lists(user_id,search_word):
+    return db.query("""SELECT users_lists.*, lists.title
+             FROM users_lists
+             INNER JOIN lists
+             ON users_lists.list_id = lists.id
+             WHERE users_lists.user_id = ?
+             AND lists.title LIKE ?""",[user_id,"%"+search_word+"%"])
+    
