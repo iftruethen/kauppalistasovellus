@@ -7,11 +7,17 @@
         {% if session.username %}
             <a href="/logout">Kirjaudu ulos</a>
             {% if items %}
+            <ul>
                 {% for item in items %}
-                <ul>
-                    <li>{{ item.content }} <button>poista</button></li>
-                </ul>
+                    <li>
+                        <form method="POST" action="/remove_item/{{item.id}}">
+                            {{ item.content }}
+                            <input type="submit" value="poista">
+                            <input type="hidden" name="list_id" value="{{ list_id }}">
+                        </form>
+                    </li>
                 {% endfor %}
+            </ul>
             {% else %}
             <p>Tämä lista on tyhjä!</p>
             {% endif %}
