@@ -95,7 +95,7 @@ Sovellus tulee toteuttamaan vaaditut toiminnallisuudet:
 
 Sovelluksen puutteet ja tarvittavat korjaukset:
 <ul>
-    <li>tietokohteiden muokkauksen ja poistamisen viimeistely</li>
+    <li><s>tietokohteiden muokkauksen ja poistamisen viimeistely</s></li>
     <li>hakutoiminnon toteuttaminen</li>
     <li>sovelluksen tietoturvan parantaminen (erityisesti pitää estää luvaton listojen katselu ja muokkaus)</li>
     <li>yleinen bugien etsintä ja reunatapaustilanteiden varmistaminen</li>
