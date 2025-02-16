@@ -84,3 +84,8 @@ def remove_item(item_id):
     referer_list_id = request.form["list_id"]
     lists.remove_item(item_id)
     return redirect("/list/"+str(referer_list_id))
+
+@app.route("/remove_list/<int:list_id>", methods=["POST"])
+def remove_list(list_id):
+    lists.remove_list(list_id)
+    return redirect("/main")

@@ -24,4 +24,7 @@ def add_item_to_list(new_item, list_id, user_id):
     return None
 
 def remove_item(item_id):
-    db.execute("DELETE FROM items WHERE id = ?",[item_id])
+    db.execute("DELETE FROM list_items WHERE item_id = ?",[item_id])
+
+def remove_list(list_id):
+    db.execute("DELETE FROM users_lists WHERE list_id = ?",[list_id])
