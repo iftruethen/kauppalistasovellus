@@ -1,5 +1,6 @@
 import sqlite3
 from flask import Flask
+from flask import abort
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
@@ -53,24 +54,33 @@ def create():
 
 @app.route("/main")
 def main():
-    users_lists = lists.get_users_lists(session["username"], session["user_id"])
+    users_lists = lists.get_users_lists(session["user_id"])
     return render_template("main.html", users_lists=users_lists)
 
-@app.route("/newlist")
+@app.route("/newlist", methods=["GET","POST"])
 def newlist():
-    return render_template("newlist.html")
-
-@app.route("/createlist", methods=["POST"])
-def createlist():
-    new_list_name = request.form["listname"]
-    lists.create_new_list(new_list_name,session["user_id"])
-    return redirect("/main")
+    if request.method == "GET":
+        return render_template("newlist.html")
+    if request.method == "POST":
+        new_list_name = request.form["listname"]
+        if not new_list_name or len(new_list_name) > 100:
+            abort(403)
+        lists.create_new_list(new_list_name,session["user_id"])
+        return redirect("/main")
 
 @app.route("/list/<int:list_id>", methods=["GET", "POST"])
 def handle_lists(list_id):
+    # check if access is authorized:
+    list = lists.get_list(list_id)
+    if not list:
+        abort(404)
+    if list[0]["user_id"] != session["user_id"]:
+        abort(403)
+
     if request.method == "GET":
         items = lists.get_items(list_id)
         return render_template("list.html", items=items, list_id=list_id)
+
     if request.method == "POST":
         new_item = request.form["new_item"]
         lists.add_item_to_list(new_item, list_id, session["user_id"])
@@ -79,19 +89,25 @@ def handle_lists(list_id):
 @app.route("/remove_item/<int:item_id>", methods=["POST"])
 def remove_item(item_id):
     referer_list_id = request.form["list_id"]
+    # check if removing is authorized:
+    item = lists.get_item(item_id)
+    if item[0]["user_id"] != session["user_id"]:
+        abort(403)
     lists.remove_item(item_id)
     return redirect("/list/"+str(referer_list_id))
 
 @app.route("/remove_list/<int:list_id>", methods=["POST"])
 def remove_list(list_id):
+    # check if removing is authorized:
+    list = lists.get_list(list_id)
+    if list[0]["user_id"] != session["user_id"]:
+        abort(403)
     lists.remove_list(list_id)
     return redirect("/main")
 
-@app.route("/haku", methods=["GET", "POST"])
+@app.route("/search", methods=["GET"])
 def search_lists():
-    if request.method == "GET":
-        return render_template("search.html")
-    if request.method == "POST":
-        search_word = request.form["search_word"]
-        list_of_lists = lists.search_lists(session["user_id"],search_word)
-        return render_template("search.html", results=list_of_lists)
+    search_word = request.args.get("search_word")
+    list_of_lists = lists.search_lists(session["user_id"],search_word) if search_word else []
+    return render_template("search.html", search_word=search_word, results=list_of_lists)
+        

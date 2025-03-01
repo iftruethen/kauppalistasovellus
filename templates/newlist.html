@@ -6,9 +6,9 @@
     <body>
         {% if session.username %}
             <a href="/logout">Kirjaudu ulos</a>
-            <form action="/createlist" method="POST">
+            <form action="/newlist" method="POST">
                 <label for="listname">Uuden listan nimi:</label>
-                <input type="text" name="listname">
+                <input type="text" name="listname" required maxlength="100">
                 <input type="submit" name="submit">
                 <a href="/main"><input type="button" value="Peruuta"></a>
             </form>

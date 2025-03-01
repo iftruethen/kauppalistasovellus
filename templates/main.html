@@ -6,7 +6,7 @@
     <body>
         {% if session.username %}
             <a href="/logout">Kirjaudu ulos</a>
-            <a href="/haku">Hae listoja</a>
+            <a href="/search">Hae listoja</a>
             {% if users_lists %}
                 <p>Sinulla on listoja:</p>
                 {% for list in users_lists %}
@@ -16,7 +16,7 @@
                     </form>
                 {% endfor %}
             {% else %}
-                <p>Sinulla ei ole vielä listoja</p>
+                <p>Sinulla ei ole listoja</p>
             {% endif %}
             <p>
                 <a href="/newlist"><input type="button" value="Luo uusi lista"></a>
