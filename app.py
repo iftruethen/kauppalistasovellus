@@ -9,6 +9,10 @@ import db, lists, userlogic
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -30,7 +34,9 @@ def login():
 
 @app.route("/logout")
 def logout():
+    require_login()
     del session["username"]
+    del session["user_id"]
     return redirect("/")
 
 @app.route("/register")
@@ -54,11 +60,13 @@ def create():
 
 @app.route("/main")
 def main():
+    require_login()
     users_lists = lists.get_users_lists(session["user_id"])
     return render_template("main.html", users_lists=users_lists)
 
 @app.route("/newlist", methods=["GET","POST"])
 def newlist():
+    require_login()
     if request.method == "GET":
         return render_template("newlist.html")
     if request.method == "POST":
@@ -70,6 +78,7 @@ def newlist():
 
 @app.route("/list/<int:list_id>", methods=["GET", "POST"])
 def handle_lists(list_id):
+    require_login()
     # check if access is authorized:
     list = lists.get_list(list_id)
     if not list:
@@ -88,6 +97,7 @@ def handle_lists(list_id):
 
 @app.route("/remove_item/<int:item_id>", methods=["POST"])
 def remove_item(item_id):
+    require_login()
     referer_list_id = request.form["list_id"]
     # check if removing is authorized:
     item = lists.get_item(item_id)
@@ -98,6 +108,7 @@ def remove_item(item_id):
 
 @app.route("/remove_list/<int:list_id>", methods=["POST"])
 def remove_list(list_id):
+    require_login()
     # check if removing is authorized:
     list = lists.get_list(list_id)
     if list[0]["user_id"] != session["user_id"]:
@@ -107,7 +118,12 @@ def remove_list(list_id):
 
 @app.route("/search", methods=["GET"])
 def search_lists():
+    require_login()
     search_word = request.args.get("search_word")
-    list_of_lists = lists.search_lists(session["user_id"],search_word) if search_word else []
-    return render_template("search.html", search_word=search_word, results=list_of_lists)
+    list_search = lists.search_lists(session["user_id"],search_word) if search_word else []
+    item_search = lists.search_items(session["user_id"],search_word) if search_word else []
+    for i in item_search:
+        print(i["list_id"],i["item_id"])
+    return render_template("search.html", search_word=search_word,
+                           list_search=list_search, item_search=item_search)
         
