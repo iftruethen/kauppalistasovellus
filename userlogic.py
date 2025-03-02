@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def check_user(username, password):
     sql = "SELECT id, password_hash FROM users WHERE name = ?"
     user_details = db.query(sql,[username])
+    return user_details[0]["id"]
 
     if not user_details:
         return None

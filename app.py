@@ -1,10 +1,9 @@
-import sqlite3
+import math
 from flask import Flask
 from flask import abort
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
-import config
-import db, lists, userlogic
+import config, lists, userlogic
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -59,10 +58,23 @@ def create():
         return render_template("message.html", message="VIRHE: tunnus on jo varattu")
 
 @app.route("/main")
-def main():
+@app.route("/main/<int:page>")
+def main(page=1):
     require_login()
-    users_lists = lists.get_users_lists(session["user_id"])
-    return render_template("main.html", users_lists=users_lists)
+
+    page_size = 10
+    list_count = lists.list_count(session["user_id"])[0][0]
+    page_count = math.ceil(list_count / page_size)
+
+    if page < 1:
+        return redirect("/main/1")
+    if page > page_count:
+        return redirect("/main/" + str(page_count))
+
+    users_lists = lists.get_users_lists(session["user_id"], page, page_size)
+
+    return render_template("main.html", list_count=list_count, page=page,
+                           page_count=page_count, users_lists=users_lists)
 
 @app.route("/newlist", methods=["GET","POST"])
 def newlist():

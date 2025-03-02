@@ -8,13 +8,24 @@
             <a href="/logout">Kirjaudu ulos</a>
             <a href="/search">Hae listoja</a>
             {% if users_lists %}
-                <p>Sinulla on listoja:</p>
+                {% if list_count == 1 %}
+                <p>Sinulla on {{ list_count }} lista:</p>
+                {% else %}
+                <p>Sinulla on {{ list_count }} listaa:</p>
+                {% endif %}
                 {% for list in users_lists %}
                     <form action="/remove_list/{{list.id}}" method="POST">
                         <a href="/list/{{ list.id }}">{{ list.title }}</a>
                         <input type="submit" value="poista">
                     </form>
                 {% endfor %}
+                <p>
+                    <a href="/main/1">&lt;&lt;</a>
+                    <a href="/main/{{page-1}}">&lt;</a>
+                    {{ page }}/{{ page_count }}
+                    <a href="/main/{{page+1}}">&gt;</a>
+                    <a href="/main/{{page_count}}">&gt;&gt;</a>
+                </p>
             {% else %}
                 <p>Sinulla ei ole listoja</p>
             {% endif %}

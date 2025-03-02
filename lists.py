@@ -1,11 +1,16 @@
 import db
 
-def get_users_lists(user_id):
-    lists = db.query("""SELECT lists.*
-                     FROM lists
-                     INNER JOIN users_lists
-                     ON lists.id = users_lists.list_id
-                     WHERE user_id = ?""", [user_id])
+def get_users_lists(user_id, page, page_size):
+    sql = """SELECT lists.* 
+             FROM lists
+             INNER JOIN users_lists
+             ON lists.id = users_lists.list_id
+             WHERE user_id = ?
+             ORDER BY users_lists.id DESC
+             LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    lists = db.query(sql, [user_id, limit, offset])
     return lists
 
 def create_new_list(new_list_name,user_id):
@@ -66,3 +71,9 @@ def search_items(user_id,search_word):
                     AND li.item_id = i.id
                     AND l.id = li.list_id
                     """, ["%" + search_word + "%", user_id])
+
+def list_count(user_id):
+    return db.query("""SELECT COUNT(*)
+                    FROM users_lists
+                    WHERE user_id = ?
+                    """, [user_id])
