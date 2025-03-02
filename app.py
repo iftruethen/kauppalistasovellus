@@ -129,7 +129,7 @@ def handle_lists(list_id):
 
     if request.method == "GET":
         items = lists.get_items(list_id)
-        return render_template("list.html", items=items, list_id=list_id)
+        return render_template("list.html", items=items, list_id=list_id, list_name=list[0]["title"])
 
     if request.method == "POST":
         check_csrf()

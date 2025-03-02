@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{% extends "layout.html" %}
 
-    </head>
-    <body>
-        {% if session.username %}
-            <a href="/logout">Kirjaudu ulos</a>
-            <form action="/newlist" method="POST">
-                <label for="listname">Uuden listan nimi:</label>
-                <input type="text" name="listname" required maxlength="100">
-                <input type="submit" name="submit">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" >
-                <a href="/main"><input type="button" value="Peruuta"></a>
-            </form>
-        {% else %}
-            <p>Sinun pitää <a href="/">kirjautua sisään</a></p>
-        {% endif %}
-    </body>
-</html>
+{% block title %}Kauppalistasovellus{% endblock %}
+{% block content %}
+    {% if session.username %}
+        <form action="/newlist" method="POST">
+            <label for="listname">Uuden listan nimi:</label>
+            <input type="text" name="listname" required maxlength="100">
+            <input type="submit" name="submit" value="Luo">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" >
+            <a href="/main"><input type="button" value="Peruuta"></a>
+        </form>
+    {% else %}
+        <p>Sinun pitää <a href="/">kirjautua sisään</a></p>
+    {% endif %}
+{% endblock %}

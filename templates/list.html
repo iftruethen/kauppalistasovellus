@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{% extends "layout.html" %}
 
-    </head>
+{% block title %}Kauppalistasovellus{% endblock %}
+{% block content %}
     <body>
         {% if session.username %}
-            <a href="/logout">Kirjaudu ulos</a>
+            <h2>{{ list_name }}</h2>
             {% if items %}
             <ul>
                 {% for item in items %}
@@ -29,10 +28,13 @@
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="submit">
             </form>
+            <hr />
+            <form action="/remove_list/{{list_id}}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <input type="submit" value="Poista lista">
+            </form>
             </p>
-            <a href="/main">Palaa pääsivulle</a>
         {% else %}
             <p>Sinun pitää <a href="/">kirjautua sisään</a></p>
         {% endif %}
-    </body>
-</html>
+{% endblock %}

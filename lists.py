@@ -20,7 +20,7 @@ def create_new_list(new_list_name, user_id):
 
 def get_list(list_id):
     list = db.query("""
-                    SELECT user_id
+                    SELECT user_id, title
                     FROM lists
                     WHERE lists.id = ?
                     """, [list_id])
