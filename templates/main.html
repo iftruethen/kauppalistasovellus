@@ -1,57 +1,35 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
-        {% if session.username %}
-            <div class="nav">
-                <nav>
-                <ul>
-                    <li><a href="/">Etusivu</a></li>
-                    <li><a href="/search">Haku</a></li>
-                    <li><a href="/register">Luo tunnus</a></li>
-                    {% if session.user_id %}
-                    <li><a href="/logout">Kirjaudu ulos</a></li>
-                    {% else %}
-                    <li><a href="/login">Kirjaudu sisään</a></li>
-                    {% endif %}
-                </ul>
-                </nav>
-            </div>
-            <a href="/logout">Kirjaudu ulos</a>
-            <a href="/listsearch">Hae listoja</a>
-            <a href="/itemsearch">Hae tuotteita</a>
-            {% if users_lists %}
-                {% if list_count == 1 %}
-                <p>Sinulla on {{ list_count }} lista:</p>
-                {% else %}
-                <p>Sinulla on {{ list_count }} listaa:</p>
-                {% endif %}
-                {% for list in users_lists %}
-                    <form action="/remove_list/{{list.id}}" method="POST">
-                        <a href="/list/{{ list.id }}">{{ list.title }}</a>
-                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                        <input type="submit" value="poista">
-                    </form>
-                {% endfor %}
-                {% if list_count > page_size %}
-                <p>
-                    <a href="/main/1">&lt;&lt;</a>
-                    <a href="/main/{{page-1}}">&lt;</a>
-                    {{ page }}/{{ page_count }}
-                    <a href="/main/{{page+1}}">&gt;</a>
-                    <a href="/main/{{page_count}}">&gt;&gt;</a>
-                </p>
-                {% endif %}
-            {% else %}
-                <p>Sinulla ei ole listoja</p>
-            {% endif %}
-            <p>
-                <a href="/newlist"><input type="button" value="Luo uusi lista"></a>
-            </p>
+{% extends "layout.html" %}
+
+{% block title %}Kauppalistasovellus{% endblock %}
+{% block content %}
+    <div class="content">
+    {% if users_lists %}
+        {% if list_count == 1 %}
+        <p>Sinulla on {{ list_count }} lista:</p>
         {% else %}
-            <p>Sinun pitää <a href="/">kirjautua sisään</a></p>
+        <p>Sinulla on {{ list_count }} listaa:</p>
         {% endif %}
-    </body>
-</html>
+        {% for list in users_lists %}
+            <form action="/remove_list/{{list.id}}" method="POST">
+                <a href="/list/{{ list.id }}">{{ list.title }}</a>
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <input type="submit" value="poista">
+            </form>
+        {% endfor %}
+        {% if list_count > page_size %}
+        <p>
+            <a href="/main/1">&lt;&lt;</a>
+            <a href="/main/{{page-1}}">&lt;</a>
+            {{ page }}/{{ page_count }}
+            <a href="/main/{{page+1}}">&gt;</a>
+            <a href="/main/{{page_count}}">&gt;&gt;</a>
+        </p>
+        {% endif %}
+    {% else %}
+        <p>Sinulla ei ole listoja</p>
+    {% endif %}
+    <p>
+        <a href="/newlist"><input type="button" value="Luo uusi lista"></a>
+    </p>
+    </div>
+{% endblock %}
