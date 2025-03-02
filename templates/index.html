@@ -3,36 +3,32 @@
 
 <head>
   <title>Kirjautuminen</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 
 <body>
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä {{ session.username }}
-  </p>
-  <p>
-    <a href="/main">Siirry sovellukseen</a>
-  </p>
-  <p>
-    <a href="/logout">Kirjaudu ulos</a>
-  </p>
-  {% else %}
-  {% for message in get_flashed_messages() %}
-  <b>{{ message }}</b>
-  {% endfor %}
-  <form action="/login" method="post">
-    <p>
-      Tunnus: <br />
-      <input type="text" name="username" />
-    </p>
-    <p>
-      Salasana: <br />
-      <input type="password" name="password" />
-    </p>
-    <input type="submit" value="Kirjaudu" />
-  </form>
-  <a href="/register"><input type="button" value="Luo uusi käyttäjä"></a>
-  {% endif %}
+  <div class="header">
+    <h1>Kauppalistasovellus</h1>
+  </div>
+  <div class="nav">
+  </div>
+  <div class="content">
+    {% for message in get_flashed_messages() %}
+    <b class="info">{{ message }}</b>
+    {% endfor %}  
+    <form action="/login" method="post">
+      <p>
+        Tunnus: <br />
+        <input type="text" name="username" />
+      </p>
+      <p>
+        Salasana: <br />
+        <input type="password" name="password" />
+      </p>
+      <input type="submit" value="Kirjaudu" />
+    </form>
+    <a href="/register"><input type="button" value="Luo uusi käyttäjä"></a>
+  </div>
 </body>
 
 </html>

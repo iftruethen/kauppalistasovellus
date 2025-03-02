@@ -39,11 +39,12 @@ def login():
 
     if not login_check:
         flash("VIRHE: väärä salasana tai tunnus")
+        return redirect("/")
     else:
         session["username"] = username
         session["user_id"] = login_check
-        session["csrf_token"] = secrets.token_hex(16)    
-    return redirect("/")
+        session["csrf_token"] = secrets.token_hex(16)
+        return redirect("/main")
         
 
 @app.route("/logout")

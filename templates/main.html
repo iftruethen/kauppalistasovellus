@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="/static/main.css">
     </head>
     <body>
         {% if session.username %}
+            <div class="nav">
+                <nav>
+                <ul>
+                    <li><a href="/">Etusivu</a></li>
+                    <li><a href="/search">Haku</a></li>
+                    <li><a href="/register">Luo tunnus</a></li>
+                    {% if session.user_id %}
+                    <li><a href="/logout">Kirjaudu ulos</a></li>
+                    {% else %}
+                    <li><a href="/login">Kirjaudu sisään</a></li>
+                    {% endif %}
+                </ul>
+                </nav>
+            </div>
             <a href="/logout">Kirjaudu ulos</a>
             <a href="/listsearch">Hae listoja</a>
             <a href="/itemsearch">Hae tuotteita</a>
