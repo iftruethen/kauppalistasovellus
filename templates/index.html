@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Kirjautuminen</title>
-  <link rel="stylesheet" href="/static/main.css">
-</head>
-
-<body>
-  <div class="header">
-    <h1>Kauppalistasovellus</h1>
-  </div>
-  <div class="nav">
-  </div>
+{% block title %}Kauppalistasovellus{% endblock %}
+{% block content %}
   <div class="content">
     {% for message in get_flashed_messages() %}
     <b class="info">{{ message }}</b>
@@ -27,8 +17,5 @@
       </p>
       <input type="submit" value="Kirjaudu" />
     </form>
-    <a href="/register"><input type="button" value="Luo uusi käyttäjä"></a>
   </div>
-</body>
-
-</html>
+{% endblock %}
