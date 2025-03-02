@@ -110,3 +110,6 @@ def list_count(user_id):
                     FROM lists
                     WHERE user_id = ?
                     """, [user_id])
+
+def new_comment(user_id, content, list_id):
+    return None

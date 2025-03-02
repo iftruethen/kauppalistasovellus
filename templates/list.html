@@ -29,6 +29,14 @@
                 <input type="submit">
             </form>
             <hr />
+            <p>Kommentit</p>
+            <form action="/newcomment/{{ list_id }}" method="POST">
+                  <p>
+                    <textarea name="content" rows="5" cols="40"></textarea>
+                  </p>
+                  <input type="submit" value="Lähetä" />
+            </form>
+            <hr />
             <form action="/remove_list/{{list_id}}" method="GET">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="submit" value="Poista lista">

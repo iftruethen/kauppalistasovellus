@@ -229,4 +229,8 @@ def search_items(page=1):
                            item_search=item_search,
                            page=page,
                            item_page_count=item_page_count
-                           )        
+                           )
+
+@app.route("/newcomment/<int:list_id>", methods=["POST"])
+def newcomment(list_id):
+    return redirect("/list/" + str(list_id))
