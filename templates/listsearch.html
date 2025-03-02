@@ -10,6 +10,7 @@
             {% else %}
             <input type="text" name="search_word">
             {% endif %}
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="submit">
         </form>
         <p>
@@ -23,19 +24,23 @@
             <p>
                 <form style="display:inline" action="/listsearch/1" method="GET">
                     <input type="hidden" name="search_word" value="{{ search_word }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" value="alkuun">
                 </form>
                 <form style="display:inline" action="/listsearch/{{page-1}}" method="GET">
                     <input type="hidden" name="search_word" value="{{ search_word }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" value="edellinen sivu">
                 </form>
                 <div style="display:inline">{{ page }}/{{ list_page_count }}</div>
                 <form style="display:inline" action="/listsearch/{{page+1}}" method="GET">
                     <input type="hidden" name="search_word" value="{{ search_word }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" value="seuraava sivu">
                 </form>
                 <form style="display:inline" action="/listsearch/{{list_page_count}}" method="GET">
                     <input type="hidden" name="search_word" value="{{ search_word }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" value="loppuun">
                 </form>
             </p>

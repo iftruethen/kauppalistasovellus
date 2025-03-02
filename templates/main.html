@@ -17,6 +17,7 @@
                 {% for list in users_lists %}
                     <form action="/remove_list/{{list.id}}" method="POST">
                         <a href="/list/{{ list.id }}">{{ list.title }}</a>
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="submit" value="poista">
                     </form>
                 {% endfor %}

@@ -3,13 +3,17 @@ from flask import Flask
 from flask import abort
 from flask import redirect, render_template, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
-import config, lists, userlogic
+import config, lists, userlogic, secrets
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 @app.before_request
@@ -38,6 +42,7 @@ def login():
     else:
         session["username"] = username
         session["user_id"] = login_check
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
         
 
@@ -90,7 +95,7 @@ def main(page=1):
                            page=page,
                            page_count=page_count,
                            users_lists=users_lists,
-                           page_size = page_size)
+                           page_size=page_size)
 
 @app.route("/newlist", methods=["GET","POST"])
 def newlist():
@@ -98,6 +103,7 @@ def newlist():
     if request.method == "GET":
         return render_template("newlist.html")
     if request.method == "POST":
+        check_csrf()
         new_list_name = request.form["listname"]
         if not new_list_name or len(new_list_name) > 100:
             abort(403)
@@ -119,6 +125,7 @@ def handle_lists(list_id):
         return render_template("list.html", items=items, list_id=list_id)
 
     if request.method == "POST":
+        check_csrf()
         new_item_name = request.form["new_item_name"]
         lists.add_item_to_list(new_item_name, session["user_id"], list_id)
         return redirect("/list/"+str(list_id))
@@ -126,6 +133,7 @@ def handle_lists(list_id):
 @app.route("/remove_item/<int:item_id>", methods=["POST"])
 def remove_item(item_id):
     require_login()
+    check_csrf()
     referer_list_id = request.form["list_id"]
     # check if removing is authorized:
     item = lists.get_item(item_id)
@@ -137,6 +145,7 @@ def remove_item(item_id):
 @app.route("/remove_list/<int:list_id>", methods=["POST"])
 def remove_list(list_id):
     require_login()
+    check_csrf()
     # check if removing is authorized:
     list = lists.get_list(list_id)
     if list[0]["user_id"] != session["user_id"]:
