@@ -1,7 +1,7 @@
-import math
+import math, time
 from flask import Flask
 from flask import abort
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import config, lists, userlogic
 
@@ -11,6 +11,16 @@ app.secret_key = config.secret_key
 def require_login():
     if "user_id" not in session:
         abort(403)
+
+@app.before_request
+def before_request():
+    g.start_time = time.time()
+
+@app.after_request
+def after_request(response):
+    elapsed_time = round(time.time() - g.start_time, 2)
+    print("elapsed time:", elapsed_time, "s")
+    return response
 
 @app.route("/")
 def index():
@@ -67,14 +77,20 @@ def main(page=1):
     page_count = math.ceil(list_count / page_size)
 
     if page < 1:
+        print("too small page number")
         return redirect("/main/1")
-    if page > page_count:
+    if page > page_count and page_count > 0:
+        print("too large page number")
         return redirect("/main/" + str(page_count))
 
     users_lists = lists.get_users_lists(session["user_id"], page, page_size)
 
-    return render_template("main.html", list_count=list_count, page=page,
-                           page_count=page_count, users_lists=users_lists)
+    return render_template("main.html",
+                           list_count=list_count,
+                           page=page,
+                           page_count=page_count,
+                           users_lists=users_lists,
+                           page_size = page_size)
 
 @app.route("/newlist", methods=["GET","POST"])
 def newlist():
@@ -103,8 +119,8 @@ def handle_lists(list_id):
         return render_template("list.html", items=items, list_id=list_id)
 
     if request.method == "POST":
-        new_item = request.form["new_item"]
-        lists.add_item_to_list(new_item, list_id)
+        new_item_name = request.form["new_item_name"]
+        lists.add_item_to_list(new_item_name, session["user_id"], list_id)
         return redirect("/list/"+str(list_id))
 
 @app.route("/remove_item/<int:item_id>", methods=["POST"])

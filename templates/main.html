@@ -20,6 +20,7 @@
                         <input type="submit" value="poista">
                     </form>
                 {% endfor %}
+                {% if list_count > page_size %}
                 <p>
                     <a href="/main/1">&lt;&lt;</a>
                     <a href="/main/{{page-1}}">&lt;</a>
@@ -27,6 +28,7 @@
                     <a href="/main/{{page+1}}">&gt;</a>
                     <a href="/main/{{page_count}}">&gt;&gt;</a>
                 </p>
+                {% endif %}
             {% else %}
                 <p>Sinulla ei ole listoja</p>
             {% endif %}

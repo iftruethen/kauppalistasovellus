@@ -6,22 +6,14 @@ CREATE TABLE users (
 
 CREATE TABLE lists (
     id INTEGER PRIMARY KEY,
-    title TEXT
-);
-
-CREATE TABLE users_lists (
-    id INTEGER PRIMARY KEY,
-    list_id INTEGER REFERENCES lists ON DELETE CASCADE,
+    title TEXT,
     user_id INTEGER REFERENCES users
 );
 
 CREATE TABLE items (
     id INTEGER PRIMARY KEY,
-    content TEXT
-);
-
-CREATE TABLE list_items (
-    id INTEGER PRIMARY KEY,
-    item_id INTEGER REFERENCES items ON DELETE CASCADE,
+    content TEXT,
+    user_id INTEGER REFERENCES users,
     list_id INTEGER REFERENCES lists
 );
+
