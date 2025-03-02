@@ -85,6 +85,7 @@ def search_item_count(user_id, search_word):
                     """, ["%" + search_word + "%", user_id])
 
 def search_items(user_id, search_word, page_size, page):
+    print("searchword:", search_word)
     limit = page_size
     offset = page_size * (page - 1)
     return db.query("""

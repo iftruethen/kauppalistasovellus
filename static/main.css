@@ -22,6 +22,10 @@ h1, h2 {
     margin: 0.5em 0;
 }
   
+nav li:not(:first-of-type) {
+    margin-left: -0.25em;
+}
+
 .content {
     background-color: white;
     padding: 1em;

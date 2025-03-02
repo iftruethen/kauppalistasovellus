@@ -14,6 +14,7 @@ def require_login():
 
 def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"]:
+        print("CSRF error")
         abort(403)
 
 @app.before_request
@@ -28,6 +29,8 @@ def after_request(response):
 
 @app.route("/")
 def index():
+    if "user_id" in session:
+        return redirect("/main")
     return render_template("index.html")
 
 @app.route("/login", methods=["POST"])
@@ -149,16 +152,21 @@ def remove_item(item_id):
     lists.remove_item(item_id)
     return redirect("/list/"+str(referer_list_id))
 
-@app.route("/remove_list/<int:list_id>", methods=["POST"])
+@app.route("/remove_list/<int:list_id>", methods=["GET", "POST"])
 def remove_list(list_id):
     require_login()
-    check_csrf()
     # check if removing is authorized:
     list = lists.get_list(list_id)
     if list[0]["user_id"] != session["user_id"]:
         abort(403)
-    lists.remove_list(list_id)
-    return redirect("/main")
+
+    if request.method == "GET":
+        return render_template("remove.html", list_id=list_id)
+    if request.method == "POST":
+        check_csrf()
+        if "continue" in request.form:
+            lists.remove_list(list_id)
+        return redirect("/main")
 
 @app.route("/listsearch", methods=["GET"])
 @app.route("/listsearch/<int:page>")
