@@ -39,7 +39,7 @@ def get_item(item_id):
                     AND list_items.list_id = users_lists.list_id
                     """,[ item_id])
 
-def add_item_to_list(new_item, list_id, user_id):
+def add_item_to_list(new_item, list_id):
     db.execute("INSERT INTO items (content) VALUES (?)", [new_item])
     db.execute("""INSERT INTO list_items
                (item_id,list_id)
@@ -53,7 +53,7 @@ def remove_item(item_id):
 def remove_list(list_id):
     db.execute("DELETE FROM users_lists WHERE list_id = ?", [list_id])
 
-def search_lists(user_id,search_word):
+def search_list_count(user_id, search_word):
     return db.query("""SELECT users_lists.list_id AS id, lists.title
              FROM users_lists
              INNER JOIN lists
@@ -61,8 +61,21 @@ def search_lists(user_id,search_word):
              WHERE users_lists.user_id = ?
              AND lists.title LIKE ?
             """, [user_id,"%" + search_word + "%"])
-    
-def search_items(user_id,search_word):
+
+def search_lists(user_id, search_word, page_size, page):
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query("""SELECT users_lists.list_id AS id, lists.title
+             FROM users_lists
+             INNER JOIN lists
+             ON users_lists.list_id = lists.id
+             WHERE users_lists.user_id = ?
+             AND lists.title LIKE ?
+             LIMIT ?
+             OFFSET ?
+            """, [user_id,"%" + search_word + "%", limit, offset])
+
+def search_item_count(user_id, search_word):
     return db.query("""SELECT DISTINCT i.id AS item_id, li.list_id as list_id, l.title
                     FROM items as i, list_items as li, users_lists as u, lists AS l
                     WHERE i.content LIKE ?
@@ -71,6 +84,20 @@ def search_items(user_id,search_word):
                     AND li.item_id = i.id
                     AND l.id = li.list_id
                     """, ["%" + search_word + "%", user_id])
+
+def search_items(user_id, search_word, page_size, page):
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query("""SELECT DISTINCT i.id AS item_id, li.list_id as list_id, l.title
+                    FROM items as i, list_items as li, users_lists as u, lists AS l
+                    WHERE i.content LIKE ?
+                    AND u.user_id = ?
+                    AND u.list_id = li.list_id
+                    AND li.item_id = i.id
+                    AND l.id = li.list_id
+                    LIMIT ?
+                    OFFSET ?
+                    """, ["%" + search_word + "%", user_id, limit, offset])
 
 def list_count(user_id):
     return db.query("""SELECT COUNT(*)

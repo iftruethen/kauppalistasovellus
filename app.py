@@ -104,7 +104,7 @@ def handle_lists(list_id):
 
     if request.method == "POST":
         new_item = request.form["new_item"]
-        lists.add_item_to_list(new_item, list_id, session["user_id"])
+        lists.add_item_to_list(new_item, list_id)
         return redirect("/list/"+str(list_id))
 
 @app.route("/remove_item/<int:item_id>", methods=["POST"])
@@ -128,14 +128,65 @@ def remove_list(list_id):
     lists.remove_list(list_id)
     return redirect("/main")
 
-@app.route("/search", methods=["GET"])
-def search_lists():
+@app.route("/listsearch", methods=["GET"])
+@app.route("/listsearch/<int:page>")
+def search_lists(page=1):
     require_login()
+
     search_word = request.args.get("search_word")
-    list_search = lists.search_lists(session["user_id"],search_word) if search_word else []
-    item_search = lists.search_items(session["user_id"],search_word) if search_word else []
-    for i in item_search:
-        print(i["list_id"],i["item_id"])
-    return render_template("search.html", search_word=search_word,
-                           list_search=list_search, item_search=item_search)
-        
+    get_list_count = lists.search_list_count(session["user_id"],
+                                             search_word
+                                             ) if search_word else []
+
+    page_size = 10
+    list_count = len(get_list_count)
+    list_page_count = math.ceil(list_count / page_size)
+
+    if page < 1:
+        page = 1
+    if page > list_page_count:
+        page = list_page_count
+
+    list_search = lists.search_lists(session["user_id"],
+                                     search_word,
+                                     page_size,
+                                     page
+                                     ) if search_word else []
+
+    return render_template("listsearch.html",
+                           search_word=search_word,
+                           list_search=list_search,
+                           page=page,
+                           list_page_count=list_page_count
+                           )
+
+@app.route("/itemsearch", methods=["GET"])
+@app.route("/itemsearch/<int:page>")
+def search_items(page=1):
+    require_login()
+
+    search_word = request.args.get("search_word")
+    get_item_count = lists.search_item_count(session["user_id"],
+                                     search_word) if search_word else []
+
+    page_size = 10
+    item_count = len(get_item_count)
+    item_page_count = math.ceil(item_count / page_size)
+
+    if page < 1:
+        page = 1
+    if page > item_page_count:
+        page = item_page_count
+
+    item_search = lists.search_items(session["user_id"],
+                                     search_word,
+                                     page_size,
+                                     page
+                                     ) if search_word else []
+
+    return render_template("itemsearch.html",
+                           search_word=search_word,
+                           item_search=item_search,
+                           page=page,
+                           item_page_count=item_page_count
+                           )        

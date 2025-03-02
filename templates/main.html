@@ -6,7 +6,8 @@
     <body>
         {% if session.username %}
             <a href="/logout">Kirjaudu ulos</a>
-            <a href="/search">Hae listoja</a>
+            <a href="/listsearch">Hae listoja</a>
+            <a href="/itemsearch">Hae tuotteita</a>
             {% if users_lists %}
                 {% if list_count == 1 %}
                 <p>Sinulla on {{ list_count }} lista:</p>
