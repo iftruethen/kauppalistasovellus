@@ -17,3 +17,4 @@ CREATE TABLE items (
     list_id INTEGER REFERENCES lists
 );
 
+CREATE INDEX idx_item_list_ids ON items (list_id);
