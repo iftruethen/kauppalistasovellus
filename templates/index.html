@@ -17,6 +17,9 @@
     <a href="/logout">Kirjaudu ulos</a>
   </p>
   {% else %}
+  {% for message in get_flashed_messages() %}
+  <b>{{ message }}</b>
+  {% endfor %}
   <form action="/login" method="post">
     <p>
       Tunnus: <br />

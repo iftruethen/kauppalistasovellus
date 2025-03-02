@@ -4,6 +4,9 @@
 
     </head>
     <body>
+        {% for message in get_flashed_messages() %}
+        <b>{{ message }}</b>
+        {% endfor %}
         <form action="/create" method="post" name="registeration_form">
             <table>
                 <tr>
@@ -38,5 +41,6 @@
                 </tr>
             </table>
         </form>
+        <a href="/"><button>Palaa etusivulle</button></a>
     </body>
 </html>

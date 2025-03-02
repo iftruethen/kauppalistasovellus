@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
-    name TEXT UNIQUE,
-    password_hash TEXT
+    name TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL
 );
 
 CREATE TABLE lists (

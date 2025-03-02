@@ -1,6 +1,6 @@
 import math, time
 from flask import Flask
-from flask import abort
+from flask import abort, flash
 from flask import redirect, render_template, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import config, lists, userlogic, secrets
@@ -38,12 +38,13 @@ def login():
     login_check = userlogic.check_user(username, password)
 
     if not login_check:
-        return render_template("message.html", message="VIRHE: väärä salasana tai tunnus")
+        #return render_template("message.html", message="VIRHE: väärä salasana tai tunnus")
+        flash("VIRHE: väärä salasana tai tunnus")
     else:
         session["username"] = username
         session["user_id"] = login_check
-        session["csrf_token"] = secrets.token_hex(16)
-        return redirect("/")
+        session["csrf_token"] = secrets.token_hex(16)    
+    return redirect("/")
         
 
 @app.route("/logout")
@@ -63,14 +64,20 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        return render_template("message.html", message="VIRHE: salasanat eivät ole samat")
+        flash("VIRHE: salasanat eivät ole samat")
+        return redirect("/register")
+    if password1 == "" or username == "":
+        flash("VIRHE: käyttäjätunnus tai salasana ei voi olla tyhjä")
+        return redirect("/register")
 
     new_user = userlogic.create_new_user(username, password1)
 
     if new_user:
-        return render_template("message.html", message="Tunnus luotu")
+        flash("Tunnus luotu!")
+        return redirect("/")
     else:
-        return render_template("message.html", message="VIRHE: tunnus on jo varattu")
+        flash("VIRHE: tunnus on jo varattu")
+        return redirect("/register")
 
 @app.route("/main")
 @app.route("/main/<int:page>")
