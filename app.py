@@ -1,4 +1,4 @@
-import math, time
+import math, time, markupsafe
 from flask import Flask
 from flask import abort, flash
 from flask import redirect, render_template, request, session, g
@@ -16,6 +16,12 @@ def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"]:
         print("CSRF error")
         abort(403)
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 @app.before_request
 def before_request():
@@ -132,7 +138,12 @@ def handle_lists(list_id):
 
     if request.method == "GET":
         items = lists.get_items(list_id)
-        return render_template("list.html", items=items, list_id=list_id, list_name=list[0]["title"])
+        comments = lists.get_comments(list_id)
+        return render_template("list.html",
+                               comments=comments,
+                               items=items,
+                               list_id=list_id,
+                               list_name=list[0]["title"])
 
     if request.method == "POST":
         check_csrf()
@@ -233,4 +244,6 @@ def search_items(page=1):
 
 @app.route("/newcomment/<int:list_id>", methods=["POST"])
 def newcomment(list_id):
+    content = request.form["content"]
+    lists.new_comment(session["user_id"], content, list_id)
     return redirect("/list/" + str(list_id))

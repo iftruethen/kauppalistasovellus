@@ -30,6 +30,15 @@
             </form>
             <hr />
             <p>Kommentit</p>
+            <ul>
+            {% for comment in comments %}
+            <li>
+                {{ comment.content  | show_lines }}
+                <br>
+                -<i>{{ comment.user }}</i>
+            </li>
+            {% endfor %}
+            </ul>
             <form action="/newcomment/{{ list_id }}" method="POST">
                   <p>
                     <textarea name="content" rows="5" cols="40"></textarea>

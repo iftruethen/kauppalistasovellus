@@ -112,4 +112,16 @@ def list_count(user_id):
                     """, [user_id])
 
 def new_comment(user_id, content, list_id):
-    return None
+    sql = """
+            INSERT INTO comments (content, user_id, list_id)
+            VALUES (?,?,?)
+        """
+    db.execute(sql, [content, user_id, list_id])
+
+def get_comments(list_id):
+    return db.query("""
+                    SELECT c.content AS content, u.name AS user
+                    FROM comments AS c, users AS u
+                    WHERE c.list_id = ?
+                    AND u.id = c.user_id
+                    """, [list_id])
