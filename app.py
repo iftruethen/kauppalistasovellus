@@ -38,7 +38,6 @@ def login():
     login_check = userlogic.check_user(username, password)
 
     if not login_check:
-        #return render_template("message.html", message="VIRHE: väärä salasana tai tunnus")
         flash("VIRHE: väärä salasana tai tunnus")
     else:
         session["username"] = username
@@ -56,7 +55,7 @@ def logout():
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    return render_template("register.html", filled={})
 
 @app.route("/create", methods=["POST"])
 def create():
@@ -65,10 +64,10 @@ def create():
     password2 = request.form["password2"]
     if password1 != password2:
         flash("VIRHE: salasanat eivät ole samat")
-        return redirect("/register")
+        return render_template("register.html", filled={"username": username})
     if password1 == "" or username == "":
         flash("VIRHE: käyttäjätunnus tai salasana ei voi olla tyhjä")
-        return redirect("/register")
+        return render_template("register.html", filled={})
 
     new_user = userlogic.create_new_user(username, password1)
 
@@ -77,7 +76,7 @@ def create():
         return redirect("/")
     else:
         flash("VIRHE: tunnus on jo varattu")
-        return redirect("/register")
+        return render_template("register.html", filled={"username": username})
 
 @app.route("/main")
 @app.route("/main/<int:page>")
