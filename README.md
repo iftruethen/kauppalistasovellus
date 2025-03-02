@@ -97,6 +97,6 @@ Sovelluksen puutteet ja tarvittavat korjaukset:
 <ul>
     <li><s>tietokohteiden muokkauksen ja poistamisen viimeistely</s></li>
     <li><s>hakutoiminnon toteuttaminen</s></li>
-    <li>sovelluksen tietoturvan parantaminen (erityisesti pitää estää luvaton listojen katselu ja muokkaus)</li>
-    <li>yleinen bugien etsintä ja reunatapaustilanteiden varmistaminen</li>
+    <li><s>sovelluksen tietoturvan parantaminen (erityisesti pitää estää luvaton listojen katselu ja muokkaus)</s></li>
+    <li><s>yleinen bugien etsintä ja reunatapaustilanteiden varmistaminen</s></li>
 </ul>
