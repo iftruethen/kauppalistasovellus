@@ -10,11 +10,17 @@
         <p>Sinulla on {{ list_count }} listaa:</p>
         {% endif %}
         {% for list in users_lists %}
-            <form action="/remove_list/{{list.id}}" method="GET">
-                <a href="/list/{{ list.id }}">{{ list.title }}</a>
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <input type="submit" value="poista">
-            </form>
+            <hr>        
+            <div class="list_name_link"><a href="/list/{{ list.id }}">{{ list.title }}</a></div>
+            <div class="metadata-row">
+                {% if list.list_owner | length > 15 %}
+                <div class="left">listan omistaja: {{ list.list_owner[0:14] }}...</div>
+                {% else %}
+                <div class="left">listan omistaja: {{ list.list_owner }}</div>
+                {% endif %}
+                <div class="center">listatyyppi: {{ list.class_name }}</div>
+                <div class="right">tuotteita listalla: {{ list.item_count }}</div>
+            </div>
         {% endfor %}
         {% if list_count > page_size %}
         <p>

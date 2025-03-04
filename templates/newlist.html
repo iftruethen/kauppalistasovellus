@@ -9,6 +9,15 @@
             <input type="submit" name="submit" value="Luo">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" >
             <a href="/main"><input type="button" value="Peruuta"></a>
+            <br>
+            <p>
+                Valitse listalle luokitus:
+                <select name="class">
+                    {% for class in classes %}
+                    <option value="{{ class.id }}" >{{ class.class }}</option>
+                    {% endfor %}
+                </select>
+            </p>
         </form>
     {% else %}
         <p>Sinun pitää <a href="/">kirjautua sisään</a></p>

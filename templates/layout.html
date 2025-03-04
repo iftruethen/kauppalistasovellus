@@ -18,7 +18,14 @@
         <li><a href="/main">Etusivu</a></li>
         <li><a href="/listsearch">Hae listoja</a></li>
         <li><a href="/itemsearch">Hae tuotteita</a></li>
-        <li><a href="/logout">Kirjaudu ulos</a></li>
+        <li>
+          {% if session.username | length > 15 %}
+          <b>{{ session.username[0:14] }}...</b>
+          {% else %}
+          <b>{{ session.username }}</b>
+          {% endif %}
+          <a href="/logout">Kirjaudu ulos</a>
+        </li>
         {% else %}
         <li><a href="/">Etusivu</a></li>
         <li><a href="/register">Luo tunnus</a></li>

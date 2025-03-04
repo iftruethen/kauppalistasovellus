@@ -54,3 +54,34 @@ nav li {
 nav li:not(:last-of-type) {
     border-right: 1px solid black;
 }
+
+.list_name_link {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+}
+
+.metadata-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-style: italic;
+    font-size: 12px;
+}
+  
+.left {
+    text-align: left;
+    flex: 1;
+}
+
+.center {
+    text-align: center;
+    flex: 1;
+}
+
+.right {
+    text-align: right;
+    flex: 1;
+}
+  
